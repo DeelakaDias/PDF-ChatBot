@@ -29,9 +29,13 @@ def get_text_chunks(text):
 
 
 def get_vectorStore(text_chunks):
-    embeddings =  OpenAIEmbeddings()
-    vectorStore =  FAISS.from_texts(texts = text_chunks, embedding = embeddings)
-    return vectorStore
+ 
+    embeddings = OpenAIEmbeddings()
+    model='text-embedding-ada-002',
+    api_key="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")
+    print(embeddings)
+    vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
+    return vectorstore
 
 def main():
     st.set_page_config(page_title="Chat with multiple PDFs", page_icon=":books:")
