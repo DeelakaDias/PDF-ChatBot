@@ -3,6 +3,12 @@ from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
+import os
+
+load_dotenv()
+
+openai_api_keys = os.getenv('OPENAI_API_KEY','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')
 
 def get_pdf_text(pdf_docs):
     text = ""
@@ -26,7 +32,9 @@ def get_text_chunks(text):
 
 
 def get_vectorStore(text_chunks):
-    
+    embeddings =  OpenAIEmbeddings()
+    vectorStore =  FAISS.from_texts(texts = text_chunks, embedding = embeddings)
+    return vectorStore
 
 def main():
     st.set_page_config(page_title="Chat with multiple PDFs", page_icon=":books:")
