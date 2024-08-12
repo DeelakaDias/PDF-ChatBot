@@ -10,6 +10,10 @@ def get_pdf_text(pdf_docs):
            text += page.extract_text()
     return text
 
+
+
+
+
 def main():
     st.set_page_config (page_title = "Chat with multiple PDFs", page_icon = ":books")
     st.header("Chat with multiple PDFs :books:")
@@ -22,10 +26,9 @@ def main():
             with st.spinner("Processing"):
                 #  get pdf text
                 raw_text = get_pdf_text(pdf_docs)
-                st.write(raw_text)
-                
+                # st.write(raw_text)
                 # get the text chucks 
-
+                text_chunks = get_text_chunks(raw_text)
                 # create vector store
 
 if __name__ == '__main__':
