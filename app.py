@@ -2,6 +2,7 @@ import streamlit as st
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
+from langchain_community.embeddings import OpenAIEmbeddings
 
 def get_pdf_text(pdf_docs):
     text = ""
@@ -22,6 +23,10 @@ def get_text_chunks(text):
     )
     chunks = text_splitter.split_text(text)
     return chunks
+
+
+def get_vectorStore(text_chunks):
+    
 
 def main():
     st.set_page_config(page_title="Chat with multiple PDFs", page_icon=":books:")
@@ -46,7 +51,9 @@ def main():
                     st.write("Text chunks:")
                     st.write(text_chunks[:5])  # Show only the first 5 chunks for preview
                     
-                    # Add additional processing if needed
+                    #create vector store
+                    vectorStore = get_vectorStore(text_chunks)
+
             else:
                 st.warning("Please upload at least one PDF file to process.")
 
