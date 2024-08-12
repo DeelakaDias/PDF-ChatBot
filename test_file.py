@@ -1,0 +1,21 @@
+import openai
+import os
+
+# Set the API key
+openai.api_key = os.getenv('OPENAI_API_KEY')
+
+# Ensure the API key is set
+if not openai.api_key:
+    raise ValueError("OPENAI_API_KEY environment variable is not set.")
+
+try:
+    # Use the new API for embeddings
+    response = openai.Embedding.create(
+        input=["Test"],  # Input should be a list of strings
+        model="text-embedding-ada-002"  # Ensure this is a valid model
+    )
+    print("Embedding response:", response)
+except openai.error.APIConnectionError as e:
+    print("APIConnectionError:", e)
+except Exception as e:
+    print("General error:", e)
