@@ -1,4 +1,5 @@
 import streamlit as st
+from dotenv import load_dotenv
 
 def main():
     st.set_page_config (page_title = "Chat with multiple PDFs", page_icon = ":books")
