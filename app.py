@@ -4,18 +4,16 @@ from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
-
-load_dotenv()
+import os
+import openai
 
 def get_pdf_text(pdf_docs):
     text = ""
     for pdf in pdf_docs:
         pdf_reader = PdfReader(pdf)
         for page in pdf_reader.pages:
-            page_text = page.extract_text()
-            if page_text:  # Ensure that the text is not None
-                text += page_text
-    return text 
+            text += page.extract_text()
+    return text
 
 def get_text_chunks(text):
     text_splitter = CharacterTextSplitter(
@@ -29,15 +27,15 @@ def get_text_chunks(text):
 
 
 def get_vectorStore(text_chunks):
- 
     embeddings = OpenAIEmbeddings()
-    model='text-embedding-ada-002',
-    api_key="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")
+    openai.api_key = os.getenv('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')
     print(embeddings)
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
     return vectorstore
 
+
 def main():
+    load_dotenv()
     st.set_page_config(page_title="Chat with multiple PDFs", page_icon=":books:")
     st.header("Chat with multiple PDFs :books:")
     question = st.text_input("Ask a question about your documents:")
