@@ -12,30 +12,30 @@ def get_pdf_text(pdf_docs):
     for pdf in pdf_docs:
         pdf_reader = PdfReader(pdf)
         for page in pdf_reader.pages:
-            text += page.extract_text()
+            text += page.extract_text() or ""
     return text
 
 def get_text_chunks(text):
     text_splitter = CharacterTextSplitter(
-        separator = "\n",
-        chunk_size = 1000,
-        chunk_overlap = 200,
-        length_function = len
+        separator="\n",
+        chunk_size=1000,
+        chunk_overlap=200,
+        length_function=len
     )
     chunks = text_splitter.split_text(text)
     return chunks
 
-
 def get_vectorStore(text_chunks):
     embeddings = OpenAIEmbeddings()
-    openai.api_key = os.getenv('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')
-    print(embeddings)
-    vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
+    if not openai.api_key:
+        raise ValueError("OPENAI_API_KEY environment variable is not set.")
+    vectorstore = FAISS.from_texts(texts = text_chunks, embedding = embeddings)
     return vectorstore
 
-
 def main():
-    load_dotenv()
+    load_dotenv()  # Load environment variables from .env file
+    openai.api_key = os.getenv('OPENAI_API_KEY')  # Set the API key for OpenAI
+
     st.set_page_config(page_title="Chat with multiple PDFs", page_icon=":books:")
     st.header("Chat with multiple PDFs :books:")
     question = st.text_input("Ask a question about your documents:")
@@ -58,13 +58,11 @@ def main():
                     st.write("Text chunks:")
                     st.write(text_chunks[:5])  # Show only the first 5 chunks for preview
                     
-                    #create vector store
+                    # Create vector store
                     vectorStore = get_vectorStore(text_chunks)
-
+                    st.write("Vector store created.")
             else:
                 st.warning("Please upload at least one PDF file to process.")
 
 if __name__ == '__main__':
     main()
-
-print("commit")
