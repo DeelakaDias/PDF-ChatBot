@@ -1,11 +1,10 @@
 # Chat with Multiple PDFs
 
 ## Overview
-
+User Interface https://github.com/user-attachments/assets/21f3811d-7efd-4a1f-851a-c0cbf0392faf 
 This Streamlit application allows users to interact with and extract information from multiple PDF documents. By uploading PDF files, the application processes and indexes the text, enabling users to ask questions and receive responses based on the content of those documents. The application uses OpenAI’s language models to facilitate conversational queries over the indexed text.
 
 ## Features
-User Interface https://github.com/user-attachments/assets/21f3811d-7efd-4a1f-851a-c0cbf0392faf 
 
 - **Upload PDFs:** Users can upload multiple PDF documents for processing.
 - **Extract Text:** The application extracts and indexes text from the uploaded PDFs.
