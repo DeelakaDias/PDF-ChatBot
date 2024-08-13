@@ -2,8 +2,11 @@ import streamlit as st
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
-from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_community.embeddings import OpenAIEmbeddings, HuggingFaceInstructEmbeddings
 from langchain_community.vectorstores import FAISS
+from langchain.memory import ConversationBufferMemory
+from langchain_community.chat_models import ChatOpenAI
+from langchain.chains import ConversationalRetrievalChain
 import os
 import openai
 
@@ -26,11 +29,19 @@ def get_text_chunks(text):
     return chunks
 
 def get_vectorStore(text_chunks):
-    embeddings = OpenAIEmbeddings()
+    # embeddings = OpenAIEmbeddings()
+    embeddings = HuggingFaceInstructEmbeddings(model_name = "hkunlp/instructor-x1")
     if not openai.api_key:
         raise ValueError("OPENAI_API_KEY environment variable is not set.")
     vectorstore = FAISS.from_texts(texts = text_chunks, embedding = embeddings)
     return vectorstore
+
+# def get_conversation_chain(vectorStore):
+#     llm = ChatOpenAI()
+#     memory = ConversationBufferMemory(memory_key = 'chat_history', return_messages = True)
+#     coversation_chain = ConversationalRetrievalChain.from_llm(
+
+#     )
 
 def main():
     load_dotenv()  # Load environment variables from .env file
@@ -61,6 +72,10 @@ def main():
                     # Create vector store
                     vectorStore = get_vectorStore(text_chunks)
                     st.write("Vector store created.")
+
+                    # create onversation chain
+                    # conversation = get_conversation_chain(vectorStore)
+
             else:
                 st.warning("Please upload at least one PDF file to process.")
 
