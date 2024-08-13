@@ -82,8 +82,6 @@ def main():
 
                     # create onversation chain
                     st.session_state.conversation = get_conversation_chain(vectorStore)
-                
-    st.session_state.conversation
 
             else:
                 st.warning("Please upload at least one PDF file to process.")
