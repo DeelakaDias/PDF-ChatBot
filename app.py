@@ -51,8 +51,12 @@ def main():
     openai.api_key = os.getenv('OPENAI_API_KEY')  # Set the API key for OpenAI
 
     st.set_page_config(page_title="Chat with multiple PDFs", page_icon=":books:")
+
+    if "conversation" not in st.session_state:
+        st.session_state.conversation = None
+        
     st.header("Chat with multiple PDFs :books:")
-    question = st.text_input("Ask a question about your documents:")
+    st.text_input("Ask a question about your documents:")
 
     with st.sidebar:
         st.subheader("Your documents")
